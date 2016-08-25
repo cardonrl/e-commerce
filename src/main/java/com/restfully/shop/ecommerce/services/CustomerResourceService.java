@@ -30,7 +30,7 @@ import org.w3c.dom.NodeList;
 public class CustomerResourceService implements CustomerResource {
   private Map<Integer, Customer> customerDB = new ConcurrentHashMap<Integer, Customer>();
   private AtomicInteger idCounter = new AtomicInteger();
-  
+
   public Response createCustomer(InputStream is) {
     Customer customer = readCustomer(is);
     customer.setId(idCounter.incrementAndGet());
