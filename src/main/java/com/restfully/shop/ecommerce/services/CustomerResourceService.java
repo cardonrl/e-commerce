@@ -1,51 +1,36 @@
-package com.restfully.shop.ecommerce.rest;
+package com.restfully.shop.ecommerce.services;
 
-
-import org.w3c.dom.Element;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.StreamingOutput;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.w3c.dom.Document;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import com.restfully.shop.ecommerce.domain.Customer;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-
 /**
- * This is a singleton file to hold state
+ * implements CustomerResource
  *
  * @author Russell Cardon
  */
-@Path("/customers")
-public class CustomerResource {
-
+public class CustomerResourceService implements CustomerResource {
   private Map<Integer, Customer> customerDB = new ConcurrentHashMap<Integer, Customer>();
   private AtomicInteger idCounter = new AtomicInteger();
-
-  @POST
-  @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+  
   public Response createCustomer(InputStream is) {
     Customer customer = readCustomer(is);
     customer.setId(idCounter.incrementAndGet());
@@ -54,10 +39,7 @@ public class CustomerResource {
     return Response.created(URI.create("/customers/" + customer.getId())).build();
   }
 
-  @GET
-  @Path("{id}")
-  @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-  public StreamingOutput getCustomer(@PathParam("id") int id) {
+  public StreamingOutput getCustomer(int id) {
     final Customer customer = customerDB.get(id);
     if (customer == null) {
       throw new WebApplicationException(Response.Status.NOT_FOUND);  // sets the http response code to 404 not_found
@@ -69,10 +51,7 @@ public class CustomerResource {
     };
   }
 
-  @PUT
-  @Path("{id}")
-  @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-  public void updateCustomer(@PathParam("id") int id, InputStream inputStream) {
+  public void updateCustomer(int id, InputStream inputStream) {
     Customer update = readCustomer(inputStream);
     Customer current = customerDB.get(id);
     if (current == null) {
@@ -139,7 +118,4 @@ public class CustomerResource {
     }
     return new Customer();
   }
-
-
-
 }
