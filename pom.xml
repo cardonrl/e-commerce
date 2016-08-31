@@ -5,8 +5,8 @@
   <artifactId>e-commerce</artifactId>
   <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>e-commerce Maven Webapp</name>
-  <url>http://maven.apache.org</url>
+  <name>e-commerce</name>
+  <!--<url>http://maven.apache.org</url>-->
 
   <properties>
     <!-- version properties -->

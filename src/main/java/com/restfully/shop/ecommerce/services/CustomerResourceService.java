@@ -27,7 +27,7 @@ import org.w3c.dom.NodeList;
  *
  * @author Russell Cardon
  */
-public class CustomerResourceService implements CustomerResource {
+public class CustomerResourceService {
   private Map<Integer, Customer> customerDB = new ConcurrentHashMap<Integer, Customer>();
   private AtomicInteger idCounter = new AtomicInteger();
 
